@@ -4,12 +4,15 @@ services:
   - docker
 
 before_install:
+  # build docker instance of Dev for testing
   - docker build -t nikojohnarellano/react-test -f ./client/Dockerfile.dev ./client
 
 script:
+  # run tests
   - docker run -e CI=true nikojohnarellano/react-test npm test
 
 after_success:
+  # multi-client can be named whatever
   - docker build -t nikojohnarellano/multi-client ./client
   - docker build -t nikojohnarellano/multi-nginx ./nginx
   - docker build -t nikojohnarellano/multi-server ./server
